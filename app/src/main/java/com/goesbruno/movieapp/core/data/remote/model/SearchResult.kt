@@ -1,8 +1,8 @@
-package com.goesbruno.movieapp.framework.data.remote.model
+package com.goesbruno.movieapp.core.data.remote.model
 
 import com.google.gson.annotations.SerializedName
 
-data class MovieResult(
+data class SearchResult(
     @SerializedName("adult")
     val adult: Boolean?,
     @SerializedName("backdrop_path")

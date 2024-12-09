@@ -1,11 +1,11 @@
-package com.goesbruno.movieapp.framework.data.remote.response
+package com.goesbruno.movieapp.core.data.remote.response
 
 
-import com.goesbruno.movieapp.framework.data.remote.model.BelongsToCollection
-import com.goesbruno.movieapp.framework.data.remote.model.Genre
-import com.goesbruno.movieapp.framework.data.remote.model.ProductionCompany
-import com.goesbruno.movieapp.framework.data.remote.model.ProductionCountry
-import com.goesbruno.movieapp.framework.data.remote.model.SpokenLanguage
+import com.goesbruno.movieapp.core.data.remote.model.BelongsToCollection
+import com.goesbruno.movieapp.core.data.remote.model.Genre
+import com.goesbruno.movieapp.core.data.remote.model.ProductionCompany
+import com.goesbruno.movieapp.core.data.remote.model.ProductionCountry
+import com.goesbruno.movieapp.core.data.remote.model.SpokenLanguage
 import com.google.gson.annotations.SerializedName
 
 data class MovieDetailResponse(

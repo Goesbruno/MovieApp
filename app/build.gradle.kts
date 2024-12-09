@@ -8,6 +8,10 @@ plugins {
     id("com.google.dagger.hilt.android")
 }
 
+val apiKeyPropertiesFile = rootProject.file("apiKey.properties")
+val apiKeyProperties = Properties()
+apiKeyProperties.load(apiKeyPropertiesFile.inputStream())
+
 android {
     namespace = "com.goesbruno.movieapp"
     compileSdk = 35
@@ -18,6 +22,14 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
+
+        val apiKey = apiKeyProperties["API_KEY"] as String
+        val baseUrl = apiKeyProperties["BASE_URL"] as String
+        val baseUrlImage = apiKeyProperties["BASE_URL_IMAGE"] as String
+        buildConfigField("String", "API_KEY", apiKey)
+        buildConfigField("String", "BASE_URL", baseUrl)
+        buildConfigField("String", "BASE_URL_IMAGE", baseUrlImage)
+
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -41,6 +53,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
