@@ -3,7 +3,6 @@ package com.goesbruno.movieapp.popular_movie_feature.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
-import com.goesbruno.movieapp.popular_movie_feature.domain.source.PopularMovieRemoteDataSource
 import com.goesbruno.movieapp.popular_movie_feature.domain.usecase.GetPopularMoviesUseCase
 import com.goesbruno.movieapp.popular_movie_feature.presentation.state.PopularMovieUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
