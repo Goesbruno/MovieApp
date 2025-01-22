@@ -1,7 +1,5 @@
 package com.goesbruno.movieapp.core.util
 
-import kotlin.Result
-
 sealed class ResultData<out T> {
 
     object Loading: ResultData<Nothing>()

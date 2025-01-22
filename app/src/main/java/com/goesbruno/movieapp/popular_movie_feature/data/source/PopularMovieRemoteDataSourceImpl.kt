@@ -6,6 +6,7 @@ import com.goesbruno.movieapp.core.paging.MoviePagingSource
 import com.goesbruno.movieapp.popular_movie_feature.domain.source.PopularMovieRemoteDataSource
 import javax.inject.Inject
 
+
 class PopularMovieRemoteDataSourceImpl @Inject constructor(
     private val service: MovieService
 ): PopularMovieRemoteDataSource {
