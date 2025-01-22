@@ -10,6 +10,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.goesbruno.movieapp.core.util.Constants
+import com.goesbruno.movieapp.favorite_movie_feature.presentation.FavoriteMoviesScreen
+import com.goesbruno.movieapp.favorite_movie_feature.presentation.FavoriteMoviesViewModel
 import com.goesbruno.movieapp.movie_detail_feature.presentation.MovieDetailsScreen
 import com.goesbruno.movieapp.movie_detail_feature.presentation.MovieDetailsViewModel
 import com.goesbruno.movieapp.movie_search_feature.presentation.MovieSearchEvent
@@ -67,6 +69,8 @@ fun NavigationGraph(navController: NavHostController) {
         ){
             val viewModel: MovieDetailsViewModel = hiltViewModel()
             val uiState by viewModel.uiState.collectAsState()
+            val onAddFavorite = viewModel::onAddFavorite
+            val checkedFavorite = viewModel::checkedFavorite
             val getMovieDetail = viewModel::getMovieDetail
 
             MovieDetailsScreen(
@@ -75,9 +79,24 @@ fun NavigationGraph(navController: NavHostController) {
                 getMovieDetail = getMovieDetail,
                 onSimilarMovieClick = {
                     navController.navigate(BottomNavItem.MovieDetails.passMovieId(movieId = it.id))
+                },
+                onAddFavorite = onAddFavorite,
+                checkedFavorite = checkedFavorite
+            )
+        }
+
+        composable(BottomNavItem.FavoriteMovies.route){
+            val viewModel: FavoriteMoviesViewModel = hiltViewModel()
+            val uiState by viewModel.uiState.collectAsState()
+
+            FavoriteMoviesScreen(
+                uiState = uiState,
+                navigateToMovieDetail = {
+                    navController.navigate(BottomNavItem.MovieDetails.passMovieId(movieId = it))
                 }
             )
         }
+
     }
 
 }

@@ -29,7 +29,9 @@ fun MovieDetailsScreen(
     id: Int?,
     uiState: MovieDetailUiState,
     getMovieDetail: (MovieDetailsEvent.GetMovieDetail) -> Unit,
-    onSimilarMovieClick: (Movie) -> Unit
+    onSimilarMovieClick: (Movie) -> Unit,
+    onAddFavorite:(Movie) -> Unit,
+    checkedFavorite: (MovieDetailsEvent.CheckedFavorite) -> Unit
 ) {
 
     val pagingSimilarMovies = uiState.results.collectAsLazyPagingItems()
@@ -37,6 +39,7 @@ fun MovieDetailsScreen(
     LaunchedEffect(key1 = true) {
         if(id != null){
             getMovieDetail(MovieDetailsEvent.GetMovieDetail(id))
+            checkedFavorite(MovieDetailsEvent.CheckedFavorite(id))
         }
     }
 
@@ -66,7 +69,7 @@ fun MovieDetailsScreen(
                 isError = uiState.error,
                 iconColor = uiState.iconColor,
                 onAddFavorite = { movie ->
-
+                    onAddFavorite(movie)
                 },
                 onMovieSimilarMovieClick = { movie ->
                     onSimilarMovieClick(movie)
