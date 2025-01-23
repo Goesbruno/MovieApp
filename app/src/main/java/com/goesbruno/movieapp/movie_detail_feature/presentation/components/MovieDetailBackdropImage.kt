@@ -15,6 +15,7 @@ import coil3.request.crossfade
 import coil3.request.error
 import coil3.request.placeholder
 import com.goesbruno.movieapp.R
+import com.goesbruno.movieapp.core.presentation.components.common.AsyncImageUrl
 
 @Composable
 fun MovieDetailBackdropImage(
@@ -23,17 +24,13 @@ fun MovieDetailBackdropImage(
 ) {
 
     Box(modifier = modifier){
-        AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(backdropImageUrl)
-                .crossfade(true)
-                .error(R.drawable.ic_error_image)
-                .placeholder(R.drawable.ic_placeholder)
-                .build(),
-            contentDescription = "",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxWidth()
+
+        AsyncImageUrl(
+            imageUrl = backdropImageUrl,
+            modifier = Modifier.fillMaxWidth(),
+            contentScale = ContentScale.Crop
         )
+
     }
 
 }

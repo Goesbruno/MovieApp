@@ -14,17 +14,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import coil3.compose.AsyncImage
-import coil3.request.ImageRequest
-import coil3.request.crossfade
-import coil3.request.error
-import coil3.request.placeholder
-import com.goesbruno.movieapp.R
+import com.goesbruno.movieapp.core.presentation.components.common.AsyncImageUrl
 import com.goesbruno.movieapp.ui.theme.black
 
 @Composable
@@ -61,20 +54,14 @@ fun MovieItem(
         ) {
 
             Box {
-                AsyncImage(
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(imageUrl)
-                        .crossfade(true)
-                        .error(R.drawable.ic_error_image)
-                        .placeholder(R.drawable.ic_placeholder)
-                        .build(),
-                    contentDescription = null,
+
+                AsyncImageUrl(
+                    imageUrl = imageUrl,
                     modifier = Modifier
                         .fillMaxWidth()
                         .align(Alignment.BottomCenter)
                         .background(black)
-                        .clip(RoundedCornerShape(8.dp)),
-                    contentScale = ContentScale.FillHeight
+                        .clip(RoundedCornerShape(8.dp))
                 )
             }
 
