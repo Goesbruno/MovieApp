@@ -7,7 +7,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.goesbruno.movieapp.core.presentation.navigation.BottomNavigationBar
+import com.goesbruno.movieapp.core.presentation.navigation.DetailScreenNav
 import com.goesbruno.movieapp.core.presentation.navigation.NavigationGraph
+import com.goesbruno.movieapp.core.presentation.navigation.currentRoute
 
 
 @Composable
@@ -15,7 +17,9 @@ fun MainScreen(navController: NavHostController) {
 
     Scaffold(
         bottomBar = {
-            BottomNavigationBar(navController = navController)
+            if (currentRoute(navController = navController) != DetailScreenNav.DetailScreen.route) {
+                BottomNavigationBar(navController = navController)
+            }
         },
         content = {  innerPadding ->
             Box(

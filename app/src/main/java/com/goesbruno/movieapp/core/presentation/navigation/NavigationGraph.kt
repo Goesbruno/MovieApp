@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -35,7 +36,7 @@ fun NavigationGraph(navController: NavHostController) {
             PopularMoviesScreen(
                 uiState = uiState,
                 navigateToMovieDetail = {
-                    navController.navigate(BottomNavItem.MovieDetails.passMovieId(movieId = it))
+                    navController.navigate(DetailScreenNav.DetailScreen.passMovieId(movieId = it))
                 },
             )
         }
@@ -50,7 +51,7 @@ fun NavigationGraph(navController: NavHostController) {
                 onEvent = onEvent,
                 onFetch = onFetch,
                 navigateToMovieDetail = {
-                    navController.navigate(BottomNavItem.MovieDetails.passMovieId(movieId = it))
+                    navController.navigate(DetailScreenNav.DetailScreen.passMovieId(movieId = it))
                 }
             )
         }
@@ -59,29 +60,24 @@ fun NavigationGraph(navController: NavHostController) {
         }
 
         composable(
-            route = BottomNavItem.MovieDetails.route,
+            route = DetailScreenNav.DetailScreen.route,
             arguments = listOf(
                 navArgument(Constants.MOVIE_DETAIL_ARGUMENT_KEY) {
                     type = NavType.IntType
                     defaultValue = 0
                 }
             )
-        ){
+        ){ it: NavBackStackEntry ->
             val viewModel: MovieDetailsViewModel = hiltViewModel()
             val uiState by viewModel.uiState.collectAsState()
             val onAddFavorite = viewModel::onAddFavorite
-            val checkedFavorite = viewModel::checkedFavorite
-            val getMovieDetail = viewModel::getMovieDetail
 
             MovieDetailsScreen(
-                id = it.arguments?.getInt(Constants.MOVIE_DETAIL_ARGUMENT_KEY),
                 uiState = uiState,
-                getMovieDetail = getMovieDetail,
                 onSimilarMovieClick = {
-                    navController.navigate(BottomNavItem.MovieDetails.passMovieId(movieId = it.id))
+                    navController.navigate(DetailScreenNav.DetailScreen.passMovieId(movieId = it.id))
                 },
                 onAddFavorite = onAddFavorite,
-                checkedFavorite = checkedFavorite
             )
         }
 
@@ -92,7 +88,7 @@ fun NavigationGraph(navController: NavHostController) {
             FavoriteMoviesScreen(
                 uiState = uiState,
                 navigateToMovieDetail = {
-                    navController.navigate(BottomNavItem.MovieDetails.passMovieId(movieId = it))
+                    navController.navigate(DetailScreenNav.DetailScreen.passMovieId(movieId = it))
                 }
             )
         }

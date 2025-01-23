@@ -2,11 +2,9 @@ package com.goesbruno.movieapp.core.presentation.navigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.goesbruno.movieapp.core.util.Constants.MOVIE_DETAIL_ARGUMENT_KEY
 
 sealed class BottomNavItem (
     val title: String,
@@ -32,12 +30,4 @@ sealed class BottomNavItem (
         route = "favorite_movies_screen"
     )
 
-    object MovieDetails: BottomNavItem(
-        title = "Detalhes",
-        icon = Icons.Default.Info,
-        route = "movie_details_destination?$MOVIE_DETAIL_ARGUMENT_KEY=" +
-                "{$MOVIE_DETAIL_ARGUMENT_KEY}"
-    ) {
-        fun passMovieId(movieId: Int) = "movie_details_destination?$MOVIE_DETAIL_ARGUMENT_KEY=$movieId"
-    }
 }

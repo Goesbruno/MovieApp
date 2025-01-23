@@ -26,22 +26,13 @@ import com.goesbruno.movieapp.ui.theme.white
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieDetailsScreen(
-    id: Int?,
     uiState: MovieDetailUiState,
-    getMovieDetail: (MovieDetailsEvent.GetMovieDetail) -> Unit,
     onSimilarMovieClick: (Movie) -> Unit,
     onAddFavorite:(Movie) -> Unit,
-    checkedFavorite: (MovieDetailsEvent.CheckedFavorite) -> Unit
 ) {
 
     val pagingSimilarMovies = uiState.results.collectAsLazyPagingItems()
 
-    LaunchedEffect(key1 = true) {
-        if(id != null){
-            getMovieDetail(MovieDetailsEvent.GetMovieDetail(id))
-            checkedFavorite(MovieDetailsEvent.CheckedFavorite(id))
-        }
-    }
 
     Scaffold(
         topBar = {
