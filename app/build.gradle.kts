@@ -30,8 +30,9 @@ android {
         buildConfigField("String", "BASE_URL", baseUrl)
         buildConfigField("String", "BASE_URL_IMAGE", baseUrlImage)
 
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+//        Antigo runner
+//        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.goesbruno.movieapp.HiltTestRunner"
 
     }
 
@@ -113,7 +114,17 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+
     testImplementation(libs.junit)
+    testImplementation(libs.truth)
+    androidTestImplementation(libs.androidx.truth)
+    androidTestImplementation(libs.google.hilt.android.testing)
+    testImplementation(libs.google.hilt.android.testing)
+    kspAndroidTest(libs.hilt.compiler)
+    androidTestImplementation(libs.androidx.core.testing)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockito.core)
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
