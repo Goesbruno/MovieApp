@@ -117,6 +117,7 @@ dependencies {
 
     testImplementation(libs.junit)
     testImplementation(libs.truth)
+    testImplementation(libs.androidx.paging.common)
     androidTestImplementation(libs.androidx.truth)
     androidTestImplementation(libs.google.hilt.android.testing)
     testImplementation(libs.google.hilt.android.testing)
@@ -124,6 +125,7 @@ dependencies {
     androidTestImplementation(libs.androidx.core.testing)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.kotlin)
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

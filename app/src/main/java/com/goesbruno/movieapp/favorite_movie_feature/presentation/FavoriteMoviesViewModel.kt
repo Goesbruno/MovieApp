@@ -7,7 +7,6 @@ import com.goesbruno.movieapp.favorite_movie_feature.presentation.state.Favorite
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -15,9 +14,10 @@ import javax.inject.Inject
 @HiltViewModel
 class FavoriteMoviesViewModel @Inject constructor(
     private val getFavoriteMoviesUseCase: GetFavoriteMoviesUseCase
-): ViewModel() {
+) : ViewModel() {
 
-    private val _uiState: MutableStateFlow<FavoriteMovieUiState> = MutableStateFlow(FavoriteMovieUiState())
+    private val _uiState: MutableStateFlow<FavoriteMovieUiState> =
+        MutableStateFlow(FavoriteMovieUiState())
     val uiState get() = _uiState.asStateFlow()
 
     init {
@@ -25,13 +25,12 @@ class FavoriteMoviesViewModel @Inject constructor(
     }
 
     private fun fetch() {
-        viewModelScope.launch{
-            getFavoriteMoviesUseCase.invoke().collectLatest { movies ->
-                _uiState.update { currentState ->
-                    currentState.copy(
-                        movies = movies
-                    )
-                }
+        viewModelScope.launch {
+            val movies = getFavoriteMoviesUseCase.invoke()
+            _uiState.update { currentState ->
+                currentState.copy(
+                    movies = movies
+                )
             }
         }
     }

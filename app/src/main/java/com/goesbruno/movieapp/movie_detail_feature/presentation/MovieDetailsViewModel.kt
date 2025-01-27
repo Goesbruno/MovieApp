@@ -42,7 +42,7 @@ class MovieDetailsViewModel @Inject constructor(
     init {
         movieId?.let { safeMovieId ->
             checkedFavorite(MovieDetailsEvent.CheckedFavorite(safeMovieId))
-            getMovieDetail(MovieDetailsEvent.GetMovieDetail(safeMovieId))
+//            getMovieDetail(MovieDetailsEvent.GetMovieDetail(safeMovieId))
 
 
         }

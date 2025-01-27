@@ -10,16 +10,14 @@ import com.goesbruno.movieapp.R
 import com.goesbruno.movieapp.core.domain.model.Movie
 import com.goesbruno.movieapp.core.presentation.components.common.MovieAppBar
 import com.goesbruno.movieapp.favorite_movie_feature.presentation.components.FavoriteMoviesContent
-import com.goesbruno.movieapp.favorite_movie_feature.presentation.state.FavoriteMovieUiState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FavoriteMoviesScreen(
-    uiState: FavoriteMovieUiState,
+    movies: List<Movie>,
     navigateToMovieDetail: (Int) -> Unit = {}
 ) {
 
-    val movies = uiState.movies
 
     Scaffold(
         topBar = {
@@ -48,8 +46,7 @@ fun FavoriteMoviesScreen(
 @Composable
 private fun FavoriteMoviesScreenPreview() {
     FavoriteMoviesScreen(
-        uiState = FavoriteMovieUiState(
-            movies = listOf(
+        movies   = listOf(
                 Movie(
                     id = 1,
                     title = "Homem Aranha",
@@ -64,5 +61,5 @@ private fun FavoriteMoviesScreenPreview() {
                 ),
             )
         )
-    )
+
 }
