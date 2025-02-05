@@ -4,10 +4,19 @@ import com.goesbruno.movieapp.core.data.remote.model.SearchResult
 import com.goesbruno.movieapp.core.domain.model.MovieSearch
 import com.goesbruno.movieapp.core.util.toPosterUrl
 
-fun List<SearchResult>.toMovieSearch() = map {searchResult ->
+fun List<SearchResult>.toMovieSearch() = map { searchResult ->
     MovieSearch(
         id = searchResult.id,
         imageUrl = searchResult.posterPath.toPosterUrl(),
         voteAverage = searchResult.voteAverage
+    )
+}
+
+
+fun SearchResult.toMovieSearch(): MovieSearch {
+    return MovieSearch(
+        id = id,
+        imageUrl = posterPath.toPosterUrl(),
+        voteAverage = voteAverage
     )
 }

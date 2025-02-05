@@ -1,11 +1,12 @@
 package com.goesbruno.movieapp.movie_detail_feature.data.source
 
 import com.goesbruno.movieapp.core.data.remote.MovieService
-import com.goesbruno.movieapp.core.data.remote.response.MovieResponse
 import com.goesbruno.movieapp.core.domain.model.MovieDetails
+import com.goesbruno.movieapp.core.domain.model.MoviePaging
 import com.goesbruno.movieapp.core.paging.SimilarMoviePagingSource
 import com.goesbruno.movieapp.core.util.toBackdropUrl
 import com.goesbruno.movieapp.movie_detail_feature.domain.source.MovieDetailRemoteDataSource
+import com.goesbruno.movieapp.popular_movie_feature.data.mapper.toMovie
 import javax.inject.Inject
 
 class MovieDetailRemoteDataSourceImpl @Inject constructor(
@@ -31,8 +32,16 @@ class MovieDetailRemoteDataSourceImpl @Inject constructor(
     override suspend fun getSimilarMovies(
         page: Int,
         movieId: Int
-    ): MovieResponse {
-        return service.getSimilarMovies(page = page, movieId = movieId)
+    ): MoviePaging {
+
+        val response = service.getSimilarMovies(page = page, movieId = movieId)
+
+        return MoviePaging(
+            page = response.page,
+            totalPages = response.totalPages,
+            totalResults = response.totalResults,
+            movies = response.results.map { it.toMovie() }
+        )
     }
 
     override fun getSimilarMoviesPagingSource(movieId: Int): SimilarMoviePagingSource {
