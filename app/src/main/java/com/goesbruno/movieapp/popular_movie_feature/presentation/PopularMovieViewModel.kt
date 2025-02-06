@@ -2,6 +2,7 @@ package com.goesbruno.movieapp.popular_movie_feature.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.goesbruno.movieapp.popular_movie_feature.domain.usecase.GetPopularMoviesUseCase
 import com.goesbruno.movieapp.popular_movie_feature.presentation.state.PopularMovieUiState
@@ -21,8 +22,11 @@ class PopularMovieViewModel @Inject constructor(
     val uiState get() = _uiState.asStateFlow()
 
     init {
-        val movies = getPopularMoviesUseCase.invoke()
-            .cachedIn(viewModelScope)
+        val movies = getPopularMoviesUseCase.invoke(
+            params = GetPopularMoviesUseCase.Params(
+                pagingConfig = pagingConfig()
+            )
+        ).cachedIn(viewModelScope)
         _uiState.update { currentState ->
             currentState.copy(
                 movies = movies
@@ -30,6 +34,12 @@ class PopularMovieViewModel @Inject constructor(
         }
 
     }
+
+    private fun pagingConfig() = PagingConfig(
+            pageSize = 20,
+            initialLoadSize = 20
+        )
+
 
 
 }

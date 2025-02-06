@@ -21,8 +21,12 @@ class  IsFavoriteMovieUseCaseImpl @Inject constructor(
 
     override suspend fun invoke(params: IsFavoriteMovieUseCase.Params): Flow<ResultData<Boolean>> {
         return flow {
-            val isFavorite = favoriteMovieRepository.isFavorite(params.movieId)
-            emit(ResultData.Success(isFavorite))
+            try {
+                val isFavorite = favoriteMovieRepository.isFavorite(params.movieId)
+                emit(ResultData.Success(isFavorite))
+            } catch (e: Exception){
+                emit(ResultData.Failure(e))
+            }
         }.flowOn(Dispatchers.IO)
     }
 

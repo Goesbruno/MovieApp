@@ -16,14 +16,19 @@ interface DeleteFavoriteMovieUseCase {
 }
 
 
-class  DeleteFavoriteMovieUseCaseImpl @Inject constructor(
+class DeleteFavoriteMovieUseCaseImpl @Inject constructor(
     private val favoriteMovieRepository: FavoriteMovieRepository
-): DeleteFavoriteMovieUseCase {
+) : DeleteFavoriteMovieUseCase {
 
     override suspend fun invoke(params: DeleteFavoriteMovieUseCase.Params): Flow<ResultData<Unit>> {
         return flow {
-            val delete = favoriteMovieRepository.delete(params.movie)
-            emit(ResultData.Success(delete))
+            try {
+                val delete = favoriteMovieRepository.delete(params.movie)
+                emit(ResultData.Success(delete))
+            } catch (e: Exception) {
+                emit(ResultData.Failure(e))
+            }
+
         }.flowOn(Dispatchers.IO)
     }
 

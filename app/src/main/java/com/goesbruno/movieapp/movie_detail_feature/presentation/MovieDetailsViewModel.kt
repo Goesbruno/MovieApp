@@ -4,6 +4,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingConfig
 import com.goesbruno.movieapp.core.domain.model.Movie
 import com.goesbruno.movieapp.core.util.Constants
 import com.goesbruno.movieapp.core.util.ResultData
@@ -42,8 +43,7 @@ class MovieDetailsViewModel @Inject constructor(
     init {
         movieId?.let { safeMovieId ->
             checkedFavorite(MovieDetailsEvent.CheckedFavorite(safeMovieId))
-//            getMovieDetail(MovieDetailsEvent.GetMovieDetail(safeMovieId))
-
+            getMovieDetail(MovieDetailsEvent.GetMovieDetail(safeMovieId))
 
         }
     }
@@ -68,44 +68,45 @@ class MovieDetailsViewModel @Inject constructor(
         when (event) {
             is MovieDetailsEvent.GetMovieDetail -> {
                 viewModelScope.launch {
-                    getMovieDetailsUseCase.invoke(
+                    val resultData = getMovieDetailsUseCase.invoke(
                         params = Params(
-                            movieId = event.movieId
+                            movieId = event.movieId,
+                            pagingConfig = pagingConfig()
                         )
-                    ).collect { resultData ->
-                        when (resultData) {
-                            is ResultData.Success -> {
-                                _uiState.update { currentState ->
-                                    currentState.copy(
-                                        isLoading = false,
-                                        movieDetails = resultData.data?.second,
-                                        results = resultData.data?.first ?: emptyFlow()
-                                    )
-                                }
-                            }
-
-                            is ResultData.Failure -> {
-                                _uiState.update { currentState ->
-                                    currentState.copy(
-                                        isLoading = false,
-                                        error = resultData.e?.message.toString()
-                                    )
-                                }
-                                UtilFunctions.logError(
-                                    tag = "DETAIL_ERROR:",
-                                    message = resultData.e?.message.toString()
+                    )
+                    when (resultData) {
+                        is ResultData.Success -> {
+                            _uiState.update { currentState ->
+                                currentState.copy(
+                                    isLoading = false,
+                                    movieDetails = resultData.data?.second,
+                                    results = resultData.data?.first ?: emptyFlow()
                                 )
                             }
+                        }
 
-                            is ResultData.Loading -> {
-                                _uiState.update { currentState ->
-                                    currentState.copy(
-                                        isLoading = true
-                                    )
-                                }
+                        is ResultData.Failure -> {
+                            _uiState.update { currentState ->
+                                currentState.copy(
+                                    isLoading = false,
+                                    error = resultData.e?.message.toString()
+                                )
+                            }
+                            UtilFunctions.logError(
+                                tag = "DETAIL_ERROR:",
+                                message = resultData.e?.message.toString()
+                            )
+                        }
+
+                        is ResultData.Loading -> {
+                            _uiState.update { currentState ->
+                                currentState.copy(
+                                    isLoading = true
+                                )
                             }
                         }
                     }
+
                 }
             }
 
@@ -186,4 +187,9 @@ class MovieDetailsViewModel @Inject constructor(
             }
         }
     }
+
+    private fun pagingConfig() = PagingConfig(
+        pageSize = 20,
+        initialLoadSize = 20
+    )
 }

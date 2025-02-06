@@ -2,6 +2,7 @@ package com.goesbruno.movieapp.movie_search_feature.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.goesbruno.movieapp.movie_search_feature.domain.usecases.GetMovieSearchUseCase
 import com.goesbruno.movieapp.movie_search_feature.presentation.state.MovieSearchUiState
@@ -24,7 +25,8 @@ class MovieSearchViewModel @Inject constructor(
     fun fetch(query: String = "") {
         val movies = getMovieSearchUseCases.invoke(
             params = GetMovieSearchUseCase.Params(
-                query = query
+                query = query,
+                pagingConfig = pagingConfig()
             )
         ).cachedIn(viewModelScope)
         _uiState.update { currentState ->
@@ -41,6 +43,11 @@ class MovieSearchViewModel @Inject constructor(
             }
         }
     }
+
+    private fun pagingConfig() = PagingConfig(
+        pageSize = 20,
+        initialLoadSize = 20
+    )
 
 
 }

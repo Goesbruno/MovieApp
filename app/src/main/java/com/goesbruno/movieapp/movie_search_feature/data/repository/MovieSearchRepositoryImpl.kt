@@ -1,24 +1,18 @@
 package com.goesbruno.movieapp.movie_search_feature.data.repository
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
+import androidx.paging.PagingSource
 import com.goesbruno.movieapp.core.domain.model.MovieSearch
+import com.goesbruno.movieapp.core.paging.MovieSearchPagingSource
 import com.goesbruno.movieapp.movie_search_feature.domain.repository.MovieSearchRepository
 import com.goesbruno.movieapp.movie_search_feature.domain.source.MovieSearchRemoteDataSource
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class MovieSearchRepositoryImpl @Inject constructor (
     private val remoteDataSource: MovieSearchRemoteDataSource
 ): MovieSearchRepository {
     override fun getSearchedMovies(
-        query: String,
-        pagingConfig: PagingConfig
-    ): Flow<PagingData<MovieSearch>> {
-        return Pager(
-            config = pagingConfig,
-            pagingSourceFactory = { remoteDataSource.getSearchMoviePagingSource(query = query)}
-        ).flow
+        query: String
+    ): PagingSource<Int, MovieSearch> {
+        return MovieSearchPagingSource(query, remoteDataSource)
     }
 }
