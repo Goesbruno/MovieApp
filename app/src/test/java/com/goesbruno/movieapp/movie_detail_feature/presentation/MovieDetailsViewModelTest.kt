@@ -63,18 +63,25 @@ class MovieDetailsViewModelTest {
     fun `should notify uiState with success when getMovieDetails returns success`() = runTest {
         //Given
         whenever(getMovieDetailsUseCase.invoke(any())).thenReturn(
-            flowOf(
-                ResultData.Success(flowOf(fakePagingData) to movieDetailsFactory)
-            )
+            ResultData.Success(flowOf(fakePagingData) to movieDetailsFactory)
         )
+        whenever(isFavoriteMovieUseCase.invoke(any())).thenReturn(
+           flowOf( ResultData.Success(true))
+        )
+
         val argumentCaptor = argumentCaptor<GetMovieDetailsUseCase.Params>()
+        val checkedArgumentCaptor = argumentCaptor<IsFavoriteMovieUseCase.Params>()
 
         //When
         viewModel.uiState.value.isLoading
 
         //Then
+        verify(isFavoriteMovieUseCase).invoke(checkedArgumentCaptor.capture())
+        assertThat(movie.id).isEqualTo(checkedArgumentCaptor.firstValue.movieId)
+
         verify(getMovieDetailsUseCase).invoke(argumentCaptor.capture())
         assertThat(movieDetailsFactory.id).isEqualTo(argumentCaptor.firstValue.movieId)
+
         val movieDetails = viewModel.uiState.value.movieDetails
         val results = viewModel.uiState.value.results
         assertThat(movieDetails).isNotNull()
@@ -86,7 +93,11 @@ class MovieDetailsViewModelTest {
         //Given
         val exception = Exception("A error occurred")
         whenever(getMovieDetailsUseCase.invoke(any())).thenReturn(
-            flowOf(ResultData.Failure(exception))
+            ResultData.Failure(exception)
+        )
+
+        whenever(isFavoriteMovieUseCase.invoke(any())).thenReturn(
+            flowOf( ResultData.Success(true))
         )
 
         //When
@@ -108,6 +119,10 @@ class MovieDetailsViewModelTest {
             whenever(isFavoriteMovieUseCase.invoke(any())).thenReturn(
                 flowOf(ResultData.Success(true))
             )
+            whenever(getMovieDetailsUseCase.invoke(any())).thenReturn(
+                ResultData.Success(flowOf(fakePagingData) to movieDetailsFactory)
+            )
+
             val deleteArgumentCaptor = argumentCaptor<DeleteFavoriteMovieUseCase.Params>()
             val checkedArgumentCaptor = argumentCaptor<IsFavoriteMovieUseCase.Params>()
 
@@ -135,6 +150,11 @@ class MovieDetailsViewModelTest {
             whenever(isFavoriteMovieUseCase.invoke(any())).thenReturn(
                 flowOf(ResultData.Success(false))
             )
+
+            whenever(getMovieDetailsUseCase.invoke(any())).thenReturn(
+                ResultData.Success(flowOf(fakePagingData) to movieDetailsFactory)
+            )
+
             val addArgumentCaptor = argumentCaptor<AddFavoriteMovieUseCase.Params>()
             val checkedArgumentCaptor = argumentCaptor<IsFavoriteMovieUseCase.Params>()
 
@@ -157,6 +177,10 @@ class MovieDetailsViewModelTest {
         //Given
         whenever(isFavoriteMovieUseCase.invoke(any())).thenReturn(
             flowOf(ResultData.Success(true))
+        )
+
+        whenever(getMovieDetailsUseCase.invoke(any())).thenReturn(
+            ResultData.Success(flowOf(fakePagingData) to movieDetailsFactory)
         )
         val checkedArgumentCaptor = argumentCaptor<IsFavoriteMovieUseCase.Params>()
 

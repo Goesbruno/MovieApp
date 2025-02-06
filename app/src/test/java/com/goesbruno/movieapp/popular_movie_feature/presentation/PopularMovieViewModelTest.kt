@@ -13,6 +13,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
+import org.mockito.kotlin.any
 import org.mockito.kotlin.whenever
 
 
@@ -42,7 +43,7 @@ class PopularMovieViewModelTest {
     @Test
     fun `must validate paging data object values when calling paging data from movies`() = runTest {
         //Given
-        whenever(getPopularMoviesUseCase.invoke()).thenReturn(
+        whenever(getPopularMoviesUseCase.invoke(any())).thenReturn(
             flowOf(fakePagingDataMovies)
         )
 
@@ -57,7 +58,7 @@ class PopularMovieViewModelTest {
     fun `must throw an exception when the calling to the use case returns an exception`() =
         runTest {
             //Given
-            whenever(getPopularMoviesUseCase.invoke()).thenThrow(
+            whenever(getPopularMoviesUseCase.invoke(any())).thenThrow(
                 RuntimeException()
             )
 
